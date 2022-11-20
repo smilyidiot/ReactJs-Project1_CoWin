@@ -8,7 +8,7 @@ class Header extends Component {
 
   render() {
     const {show} = this.state
-    console.log(show)
+    console.log('show', show)
 
     const {match} = this.props
     const {path} = match
