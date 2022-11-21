@@ -176,7 +176,7 @@ class Home extends Component {
 
     const response = await fetch(url)
     const data = await response.json()
-    console.log(data)
+    console.log('data', data)
 
     if (response.ok) {
       const newData = statesList.map(eachCountry => {
