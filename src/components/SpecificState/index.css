@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .state-wise-container {
@@ -10,7 +11,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   padding: 80px;
   padding-top: 40px;
@@ -21,6 +22,7 @@
 
 @media screen and (max-width: 576px) {
   .state-wise-container {
+    width: 100%;
     padding: 20px;
   }
 }
@@ -33,7 +35,7 @@
   align-items: center;
 }
 
-/* .state-name-container {
+.state-name-container {
   padding: 0px;
   padding-bottom: 0px;
   padding-left: 20px;
@@ -45,14 +47,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-} */
-
-/* .top-first-half-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-} */
+}
 
 .state-name {
   color: #0ea5e9;
@@ -272,7 +267,7 @@
 }
 
 .image-container {
-  width: 70%;
+  width: 80%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -325,8 +320,6 @@
   color: #94a3b8;
   font-size: 16px;
 }
-
-/* Herafnalkan */
 
 .graphs-container {
   width: 100%;
@@ -511,9 +504,8 @@
   margin-top: 0px;
 }
 
-.graphs-sm {
+.graphs-small {
   display: none;
-  width: 100%;
 }
 
 @media screen and (max-width: 576px) {
@@ -521,7 +513,7 @@
     display: none;
     width: 100%;
   }
-  .graphs-sm {
+  .graphs-small {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

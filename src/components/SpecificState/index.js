@@ -310,8 +310,8 @@ class SpecificState extends Component {
     // console.log('timeline data', data)
 
     if (response.ok === true) {
-      const newTimeLineData = data[stateCode].dates
-      districtNames = data[stateCode].districts // defined out the class to be global function
+      const newTimeLineData = data[`${stateCode}`].dates
+      districtNames = data[`${stateCode}`].districts // defined out the class to be global function
 
       this.setState({
         timelineContent: newTimeLineData,
@@ -442,7 +442,9 @@ class SpecificState extends Component {
     return (
       <div className="state-wise-container">
         <div className="heading-container">
-          <h1 className="state-name">{stateWiseContent.name}</h1>
+          <div className="state-name-container">
+            <h1 className="state-name">{stateWiseContent.name}</h1>
+          </div>
           <div className="heading-right-container">
             <p className="tested-name">Tested</p>
             <p className="tested-numbers">{stateWiseContent.tested}</p>
@@ -652,7 +654,7 @@ class SpecificState extends Component {
         number:
           timelineContent[key].total.confirmed === undefined
             ? 0
-            : timelineContent[key].confirmed,
+            : timelineContent[key].total.confirmed,
       }),
     )
 
@@ -663,7 +665,7 @@ class SpecificState extends Component {
         number:
           timelineContent[key].total.recovered === undefined
             ? 0
-            : timelineContent[key].recovered,
+            : timelineContent[key].total.recovered,
       }),
     )
 
@@ -674,7 +676,7 @@ class SpecificState extends Component {
         number:
           timelineContent[key].total.deceased === undefined
             ? 0
-            : timelineContent[key].deceased,
+            : timelineContent[key].total.deceased,
       }),
     )
 
@@ -685,13 +687,13 @@ class SpecificState extends Component {
         number:
           (timelineContent[key].total.confirmed === undefined
             ? 0
-            : timelineContent[key].confirmed) -
+            : timelineContent[key].total.confirmed) -
           ((timelineContent[key].total.recovered === undefined
             ? 0
-            : timelineContent[key].recovered) +
+            : timelineContent[key].total.recovered) +
             (timelineContent[key].total.deceased === undefined
               ? 0
-              : timelineContent[key].deceased)),
+              : timelineContent[key].total.deceased)),
       }),
     )
 
@@ -702,7 +704,7 @@ class SpecificState extends Component {
         number:
           timelineContent[key].total.tested === undefined
             ? 0
-            : timelineContent[key].tested,
+            : timelineContent[key].total.tested,
       }),
     )
 
@@ -799,13 +801,12 @@ class SpecificState extends Component {
     const {timelineContent, activeCard, trendTab, selectValue} = this.state
     // console.log('timeline', timelineContent)
 
-    let newTimelineData = []
+    let newTimeLineData = []
     if (timelineContent.length !== 0) {
-      newTimelineData = this.getTimelineChartValues()
-      newTimelineData = newTimelineData.slice(-10)
+      newTimeLineData = this.getTimelineChartValues()
+      newTimeLineData = newTimeLineData.slice(-10)
     }
-
-    // console.log('new', newTimelineData)
+    // console.log('abcd', newTimeLineData)
 
     let chartColor = '#9A0E31'
     switch (activeCard) {
@@ -842,7 +843,7 @@ class SpecificState extends Component {
               width={700}
               height={240}
               barSize={35}
-              data={newTimelineData}
+              data={newTimeLineData}
             >
               <XAxis
                 dataKey="date"
@@ -1018,6 +1019,189 @@ class SpecificState extends Component {
                   stroke="#9673B9"
                   strokeWidth={2}
                   dot={{fill: '#9673B9'}}
+                />
+              </LineChart>
+            </div>
+          </div>
+        </div>
+        <div className="graphs-small">
+          <div className="bar-chart-small">
+            <BarChart
+              width={350}
+              height={150}
+              barSize={15}
+              data={newTimeLineData}
+            >
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                interval={0}
+                fontSize={6}
+                tickLine={0}
+                tick={{fill: chartColor, strokeWidth: 1}}
+              />
+              <Bar
+                dataKey="number"
+                fill={chartColor}
+                radius={[3, 3, 0, 0]}
+                label={{position: 'top', fill: chartColor, fontSize: 6}}
+              />
+            </BarChart>
+          </div>
+          <h1 className="spread-trends">Daily Spread Trends</h1>
+          <div className="trend-container">
+            <button
+              className={cumulative}
+              type="button"
+              onClick={() => this.trendChange('CUMULATIVE')}
+            >
+              Cumulative
+            </button>
+            <button
+              className={daily}
+              type="button"
+              onClick={() => this.trendChange('DAILY')}
+            >
+              Daily
+            </button>
+          </div>
+          <div className="select-container">
+            <select
+              value={selectValue}
+              className="select-element"
+              onChange={this.onChangeSelect}
+            >
+              <option value="Select District">Select District</option>
+              {selectOptions.map(eachDist => (
+                <option key={eachDist} value={eachDist}>
+                  {eachDist}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="line-chart-small">
+            <div className="confirmed-chart">
+              <p className="confirmed-heading">Confirmed</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.confirmed}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#FF073A', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#FF073A', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#FF073A"
+                  strokeWidth={1}
+                  dot={{fill: '#FF073A', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="active-chart">
+              <p className="active-heading">Total Active</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.active}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#007BFF', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#007BFF', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#007BFF"
+                  strokeWidth={1}
+                  dot={{fill: '#007BFF', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="recovered-chart">
+              <p className="recovered-heading">Recovered</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.recovered}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#27A243', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#27A243', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#27A243"
+                  strokeWidth={1}
+                  dot={{fill: '#27A243', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="deceased-chart">
+              <p className="deceased-heading">Deceased</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.deceased}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#6C757D', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#6C757D', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#6C757D"
+                  strokeWidth={1}
+                  dot={{fill: '#6C757D', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="tested-chart">
+              <p className="tested-heading">Tested</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.tested}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#9673B9', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#9673B9', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#9673B9"
+                  strokeWidth={1}
+                  dot={{fill: '#9673B9', r: 1}}
                 />
               </LineChart>
             </div>
