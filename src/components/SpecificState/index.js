@@ -233,7 +233,7 @@ class SpecificState extends Component {
   state = {
     stateWiseStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
     stateWiseContent: [],
-    timeLineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
+    timelineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
     timelineContent: [],
     activeCard: 'CONFIRMED', // CONFIRMED, ACTIVE, RECOVERED, DECEASED
     selectValue: 'Select District',
@@ -253,7 +253,7 @@ class SpecificState extends Component {
 
     // mapping all stateCode in a list
     const codeList = stateDetailsList.map(eachState => eachState.state_code)
-    if (codeList.includes(stateCode) === false) {
+    if (!codeList.includes(stateCode)) {
       const {history} = this.props
       history.replace('/not-found')
     }
@@ -293,13 +293,13 @@ class SpecificState extends Component {
   }
 
   getTimeLineDetails = async () => {
-    this.setState({timeLineStatus: 'IN_PROGRESS'})
+    this.setState({timelineStatus: 'IN_PROGRESS'})
     const {match} = this.props
     const {params} = match
     const {stateCode} = params
 
     const codeList = stateDetailsList.map(each => each.state_code)
-    if (codeList.includes(stateCode) === false) {
+    if (!codeList.includes(stateCode)) {
       const {history} = this.props
       history.replace('/not-found')
     }
@@ -309,13 +309,13 @@ class SpecificState extends Component {
     const data = await response.json()
     // console.log('timeline data', data)
 
-    if (response.ok === true) {
-      const newTimeLineData = data[`${stateCode}`].dates
+    if (response.ok) {
+      const newTimelineData = data[`${stateCode}`].dates
       districtNames = data[`${stateCode}`].districts // defined out the class to be global function
 
       this.setState({
-        timelineContent: newTimeLineData,
-        timeLineStatus: 'SUCCESS',
+        timelineContent: newTimelineData,
+        timelineStatus: 'SUCCESS',
       })
     }
   }
@@ -439,6 +439,14 @@ class SpecificState extends Component {
       districtValue = this.getDistrictValues()
     }
 
+    let time = stateWiseContent.lastUpdated
+    time = time.toLocaleString('en-us', {
+      month: 'short',
+      day: '2-digit',
+    })
+    time = time.slice(0, 10)
+    console.log(time)
+
     return (
       <div className="state-wise-container">
         <div className="heading-container">
@@ -450,15 +458,13 @@ class SpecificState extends Component {
             <p className="tested-numbers">{stateWiseContent.tested}</p>
           </div>
         </div>
-        <p className="last-updated">
-          Lasted updated on {stateWiseContent.lastUpdated}
-        </p>
+        <p className="last-updated">Lasted updated on {time}</p>
         <ul className="state-wise-card-list">
-          <li className={confirmedCaseCard}>
+          <li className={confirmedCaseCard} key="confirmed">
             <button
               type="button"
               onClick={() => this.activateCard('CONFIRMED')}
-              //   testid="stateSpecificConfirmedCasesContainer"
+              testid="stateSpecificConfirmedCasesContainer"
               className="card-button"
             >
               <p className="confirm-card-name">Confirmed</p>
@@ -470,11 +476,11 @@ class SpecificState extends Component {
               <p className="confirm-cases">{stateWiseContent.confirmed}</p>
             </button>
           </li>
-          <li className={activeCaseCard}>
+          <li className={activeCaseCard} key="active">
             <button
               type="button"
               onClick={() => this.activateCard('ACTIVE')}
-              //   testid="stateSpecificActiveCasesContainer"
+              testid="stateSpecificActiveCasesContainer"
               className="card-button"
             >
               <p className="active-card-name">Active</p>
@@ -486,11 +492,11 @@ class SpecificState extends Component {
               <p className="active-cases">{stateWiseContent.active}</p>
             </button>
           </li>
-          <li className={recoveredCaseCard}>
+          <li className={recoveredCaseCard} key="recovered">
             <button
               type="button"
               onClick={() => this.activateCard('RECOVERED')}
-              //   testid="stateSpecificActiveCasesContainer"
+              testid="stateSpecificRecoveredCasesContainer"
               className="card-button"
             >
               <p className="recovered-card-name">Recovered</p>
@@ -502,11 +508,11 @@ class SpecificState extends Component {
               <p className="recovered-cases">{stateWiseContent.recovered}</p>
             </button>
           </li>
-          <li className={deceasedCaseCard}>
+          <li className={deceasedCaseCard} key="deceased">
             <button
               type="button"
               onClick={() => this.activateCard('DECEASED')}
-              //   testid="stateSpecificActiveCasesContainer"
+              testid="stateSpecificDeceasedCasesContainer"
               className="card-button"
             >
               <p className="deceased-card-name">Deceased</p>
@@ -536,7 +542,7 @@ class SpecificState extends Component {
         </div>
 
         <h1 className="top-districts">Top Districts</h1>
-        <ul className="districts-list">
+        <ul className="districts-list" testid="topDistrictsUnorderedList">
           {districtValue.map(eachDist => (
             <li className="districts-list-item" key={eachDist.name}>
               <p className="districts-name">{eachDist.value}</p>
@@ -549,10 +555,7 @@ class SpecificState extends Component {
   }
 
   stateWiseLoaderView = () => (
-    <div
-      className="state-wise-loader-container"
-      //  testid="stateDetailsLoader"
-    >
+    <div className="state-wise-loader-container" testid="stateDetailsLoader">
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
@@ -577,17 +580,17 @@ class SpecificState extends Component {
     })
     // console.log('newDate', newDate) //  Sep 12
 
-    // const dateList = newDate.split(' ')
+    const dateList = newDate.split(' ')
     // console.log('dateList', dateList) // ['Sep', '12']
 
-    // const dateFormat = []
-    // dateFormat.push(dateList[0])
-    // dateFormat.push(dateList[1].toUpperCase())
-    // console.log('dateFormat', dateFormat) // ['12', '12']
+    const dateFormat = []
+    dateFormat.push(dateList[0].toUpperCase())
+    dateFormat.push(dateList[1])
+    // console.log('dateFormat', dateFormat) // ['SEP', '12']
 
-    // const result = dateFormat.join(' ')
+    const result = dateFormat.join(' ')
     // console.log('res', result) // Sep 12
-    return newDate
+    return result
   }
 
   getTimelineChartValues = () => {
@@ -836,7 +839,7 @@ class SpecificState extends Component {
     const selectOptions = Object.keys(districtNames)
 
     return (
-      <div className="graphs-container">
+      <div className="graphs-container" testid="lineChartsContainer">
         <div className="graphs-large">
           <div className="bar-chart-large">
             <BarChart
@@ -1212,18 +1215,15 @@ class SpecificState extends Component {
   }
 
   timelineLoaderView = () => (
-    <div
-      className="stateWise-loader-container"
-      //  testid="timelinesDataLoader"
-    >
+    <div className="stateWise-loader-container" testid="timelinesDataLoader">
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
 
   showTimelineContainer = () => {
-    const {timeLineStatus} = this.state
+    const {timelineStatus} = this.state
 
-    switch (timeLineStatus) {
+    switch (timelineStatus) {
       case 'SUCCESS':
         return this.timelineSuccessView()
       default:

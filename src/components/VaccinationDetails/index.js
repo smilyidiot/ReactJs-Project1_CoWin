@@ -1,9 +1,9 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import {AiFillHome} from 'react-icons/ai'
+
 import {
-  BarChart,
-  Bar,
+  AreaChart,
   XAxis,
   YAxis,
   ResponsiveContainer,
@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
   Cell,
+  Area,
 } from 'recharts'
 
 import Header from '../Header'
@@ -44,16 +45,16 @@ class VaccinationDetails extends Component {
         dose1: data.topBlock.vaccination.tot_dose_1,
         dose2: data.topBlock.vaccination.tot_dose_2,
         doseChart: data.vaccinationDoneByTime.map(eachValue => ({
+          label: eachValue.label,
           total: eachValue.count,
           doseOne: eachValue.dose_one,
           doseTwo: eachValue.dose_two,
-          label: eachValue.label,
         })),
         ageChart: data.vaccinationDoneByTimeAgeWise.map(each => ({
           label: each.label,
           between15to17: each.vac_15_17,
           between18to45: each.vac_18_45,
-          between46to60: each.vac_46_60,
+          between45to60: each.vac_45_60,
           greaterThan60: each.vac_60_above,
         })),
         byGender: [
@@ -91,7 +92,7 @@ class VaccinationDetails extends Component {
           },
           {
             category: '46-60',
-            count: data.vaccinationByAge.vac_46_60,
+            count: data.vaccinationByAge.vac_45_60,
           },
           {
             category: 'above 60',
@@ -99,6 +100,7 @@ class VaccinationDetails extends Component {
           },
         ],
       }
+      console.log('data', data)
       this.setState({vaccinationDetails: newVaccinated, status: 'SUCCESS'})
     }
   }
@@ -119,6 +121,8 @@ class VaccinationDetails extends Component {
     } else {
       graphDetails = vaccinationDetails.ageChart
     }
+    console.log('graph', graphDetails)
+
     return (
       <div className="vaccination-container">
         <p className="page-heading">
@@ -193,54 +197,162 @@ class VaccinationDetails extends Component {
               </button>
             </div>
             <div className="line-chart-large">
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart width={500} height={300} data={graphDetails}>
-                  <XAxis dataKey="label" fontSize="12px" />
-                  <YAxis fontSize="12px" />
-                  <Tooltip cursor={{fill: '#FFEBE5'}} />
-                  <Legend iconSize="10px" fontSize="12px" />
-                  {trends === 'dose' && (
-                    <>
-                      <Bar dataKey="total" fill="#A226DC" />
-                      <Bar dataKey="doseOne" fill="#FCEA4E" />
-                      <Bar dataKey="doseTwo" fill="#37C62B" />
-                    </>
-                  )}
-                  {trends === 'age' && (
-                    <>
-                      <Bar dataKey="between15to17" fill="#A226DC" />
-                      <Bar dataKey="between18to45" fill="#FCEA4E" />
-                      <Bar dataKey="between46to60" fill="#37C62B" />
-                      <Bar dataKey="greaterThan60" fill="#F54394" />
-                    </>
-                  )}
-                </BarChart>
-              </ResponsiveContainer>
+              {trends === 'dose' && (
+                <ResponsiveContainer width="100%">
+                  <AreaChart
+                    width={700}
+                    height={250}
+                    data={vaccinationDetails.doseChart}
+                    margin={{top: 10, right: 30, left: 0, bottom: 0}}
+                  >
+                    <XAxis dataKey="label" fontSize="12px" />
+                    <YAxis fontSize="12px" />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="total"
+                      stroke="#A226DC"
+                      fillOpacity={0.5}
+                      fill="#A226DC"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="doseOne"
+                      stroke="#FCEA4E"
+                      fillOpacity={0.5}
+                      fill="#FCEA4E"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="doseTwo"
+                      stroke="#37C62B"
+                      fillOpacity={0.5}
+                      fill="#37C62B"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+              {trends === 'age' && (
+                <ResponsiveContainer width="100%">
+                  <AreaChart
+                    width={700}
+                    height={250}
+                    data={vaccinationDetails.ageChart}
+                    margin={{top: 10, right: 30, left: 0, bottom: 0}}
+                  >
+                    <XAxis dataKey="label" fontSize="12px" />
+                    <YAxis fontSize="12px" />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="between15to17"
+                      stroke="#A226DC"
+                      fillOpacity={0.5}
+                      fill="#A226DC"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="between18to45"
+                      stroke="#FCEA4E"
+                      fillOpacity={0.5}
+                      fill="#FCEA4E"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="between45to60"
+                      stroke="#37C62B"
+                      fillOpacity={0.5}
+                      fill="#37C62B"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="greaterThan60"
+                      stroke="#F54394"
+                      fillOpacity={0.5}
+                      fill="#F54394"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </div>
             <div className="line-chart-small">
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart width={800} height={300} data={graphDetails.slice(4)}>
-                  <XAxis dataKey="label" fontSize="6px" />
-                  <YAxis fontSize="6px" />
-                  <Tooltip cursor={{fill: '#FFEBE5'}} />
-                  <Legend iconSize="10px" fontSize="6px" />
-                  {trends === 'dose' && (
-                    <>
-                      <Bar dataKey="total" fill="#A226DC" />
-                      <Bar dataKey="doseOne" fill="#FCEA4E" />
-                      <Bar dataKey="doseTwo" fill="#37C62B" />
-                    </>
-                  )}
-                  {trends === 'age' && (
-                    <>
-                      <Bar dataKey="between15to17" fill="#A226DC" />
-                      <Bar dataKey="between18to45" fill="#FCEA4E" />
-                      <Bar dataKey="between46to60" fill="#37C62B" />
-                      <Bar dataKey="greaterThan60" fill="#F54394" />
-                    </>
-                  )}
-                </BarChart>
-              </ResponsiveContainer>
+              {trends === 'dose' && (
+                <ResponsiveContainer width="100%" height={250}>
+                  <AreaChart
+                    width={700}
+                    height={250}
+                    data={graphDetails.slice(4)}
+                    margin={{top: 10, right: 30, left: 0, bottom: 0}}
+                  >
+                    <XAxis dataKey="label" fontSize="6px" />
+                    <YAxis fontSize="6px" />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="total"
+                      stroke="#A226DC"
+                      fillOpacity={0.5}
+                      fill="#A226DC"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="doseOne"
+                      stroke="#FCEA4E"
+                      fillOpacity={0.5}
+                      fill="#FCEA4E"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="doseTwo"
+                      stroke="#37C62B"
+                      fillOpacity={0.5}
+                      fill="#37C62B"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+              {trends === 'age' && (
+                <ResponsiveContainer width="100%" height={250}>
+                  <AreaChart
+                    width={700}
+                    height={250}
+                    data={graphDetails.slice(4)}
+                    margin={{top: 10, right: 30, left: 0, bottom: 0}}
+                  >
+                    <XAxis dataKey="label" fontSize="6px" />
+                    <YAxis fontSize="6px" />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey="between15to17"
+                      stroke="#A226DC"
+                      fillOpacity={0.5}
+                      fill="#A226DC"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="between18to45"
+                      stroke="#FCEA4E"
+                      fillOpacity={0.5}
+                      fill="#FCEA4E"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="between45to60"
+                      stroke="#37C62B"
+                      fillOpacity={0.5}
+                      fill="#37C62B"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="greaterThan60"
+                      stroke="#F54394"
+                      fillOpacity={0.5}
+                      fill="#F54394"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </div>
           <div className="bottom-container">

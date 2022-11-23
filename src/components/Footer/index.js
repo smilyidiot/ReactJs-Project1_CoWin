@@ -1,4 +1,7 @@
-import {FiGithub, FiInstagram, FiTwitter} from 'react-icons/fi'
+import {VscGithubAlt} from 'react-icons/vsc'
+import {FiInstagram} from 'react-icons/fi'
+import {FaTwitter} from 'react-icons/fa'
+
 import './index.css'
 
 const Footer = () => (
@@ -10,9 +13,9 @@ const Footer = () => (
       we stand with everyone fighting on the front lines
     </p>
     <div className="footer-icon-container">
-      <FiGithub className="footer-icon" />
+      <VscGithubAlt className="footer-icon" />
       <FiInstagram className="footer-icon" />
-      <FiTwitter className="footer-icon" />
+      <FaTwitter className="footer-icon" />
     </div>
   </div>
 )

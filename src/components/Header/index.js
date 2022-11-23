@@ -27,7 +27,7 @@ class Header extends Component {
       <div>
         <nav className="navbar-container">
           <Link to="/" className="logo-link">
-            <span className="app-logo">COVID</span>
+            <span className="app-logo">COVID19</span>
             <span className="app-logo blue">INDIA</span>
           </Link>
           <ul className="navbar-list">
