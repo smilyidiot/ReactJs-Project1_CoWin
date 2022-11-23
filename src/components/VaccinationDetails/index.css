@@ -37,37 +37,6 @@
 .icon {
   margin-right: 10px;
 }
-/* 
-.select-container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.select-holder {
-  width: 180px;
-  padding: 10px;
-  margin-right: 14px;
-  background-color: #2f2f43;
-  opacity: 0.5;
-  color: #f8fafc;
-  font-size: 10px;
-  border-style: none;
-  outline: none;
-  border-radius: 6px;
-}
-
-@media screen and (max-width: 576px) {
-  .select-container {
-    justify-content: center;
-  }
-  .select-holder {
-    width: 120px;
-    font-size: 8px;
-  }
-} */
 
 .vaccination-content-container {
   width: 100%;
@@ -232,17 +201,6 @@
     font-size: 6px;
   }
 }
-
-/* .india-image {
-  width: 450px;
-  height: 450px;
-}
-
-@media screen and (max-width: 576px) {
-  .india-image {
-    width: 250px;
-  }
-} */
 
 .bottom-container {
   display: flex;

@@ -267,6 +267,7 @@ class SpecificState extends Component {
     const currentStateDetails = stateDetailsList.find(
       each => each.state_code === stateCode,
     )
+    console.log('response', response)
 
     if (response.ok) {
       const newStateData = {

@@ -39,7 +39,7 @@ class About extends Component {
         <p className="para-heading">
           COVID-19 vaccines be ready for distribution
         </p>
-        <ul testid="faqsUnorderedList" className="quest-ans-list">
+        <ul className="quest-ans-list" testid="faqsUnorderedList">
           {faqsList.map(each => (
             <li className="qa-list-item" key={each.qno}>
               <p className="question">{each.question}</p>

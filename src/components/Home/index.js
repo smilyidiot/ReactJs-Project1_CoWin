@@ -176,7 +176,7 @@ class Home extends Component {
 
     const response = await fetch(url)
     const data = await response.json()
-    console.log('data', data)
+    console.log('home', data)
 
     if (response.ok) {
       const newData = statesList.map(eachCountry => {
@@ -276,6 +276,7 @@ class Home extends Component {
     const totalActiveCases = activeArray.reduce((a, b) => a + b, 0)
     const totalRecoveredCases = recoveredArray.reduce((a, b) => a + b, 0)
     const totalDeceasedCases = deceasedArray.reduce((a, b) => a + b, 0)
+    console.log('search', searchList)
 
     return (
       <div className="home-container">
@@ -296,7 +297,7 @@ class Home extends Component {
                 to={`/state/${eachResult.state_code}`}
                 className="search-link"
               >
-                <li className="search-list-item">
+                <li className="search-list-item" key={eachResult.state_code}>
                   <p className="search-item">{eachResult.state_name}</p>
                   <div className="icon-container">
                     <p className="item-code">{eachResult.state_code}</p>
