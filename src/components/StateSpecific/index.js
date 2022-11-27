@@ -226,23 +226,29 @@ const stateDetailsList = [
   },
 ]
 
-let districtNames = {}
+// let districtNames = {}
 let lineChartData = {}
 
 class SpecificState extends Component {
   state = {
-    stateWiseStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
+    stateWiseStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS, FAILURE
     stateWiseContent: [],
-    timelineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
+    timelineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS, FAILURE
     timelineContent: [],
     activeCard: 'CONFIRMED', // CONFIRMED, ACTIVE, RECOVERED, DECEASED
     selectValue: 'Select District',
     trendTab: 'CUMULATIVE', // CUMULATIVE OR DAILY
+    districtsData: {},
   }
 
   componentDidMount() {
     this.getStateWiseDetails()
     this.getTimeLineDetails()
+  }
+
+  startFetching = () => {
+    const {history} = this.props
+    history.replace('/')
   }
 
   getStateWiseDetails = async () => {
@@ -308,15 +314,16 @@ class SpecificState extends Component {
     const timelineUrl = `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`
     const response = await fetch(timelineUrl)
     const data = await response.json()
-    // console.log('timeline data', data)
+    console.log('timeline data', data)
 
     if (response.ok) {
       const newTimelineData = data[`${stateCode}`].dates
-      districtNames = data[`${stateCode}`].districts // defined out the class to be global function
+      const districtNames = data[`${stateCode}`].districts // defined out the class to be global function
 
       this.setState({
         timelineContent: newTimelineData,
         timelineStatus: 'SUCCESS',
+        districtsData: districtNames,
       })
     }
   }
@@ -465,7 +472,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('CONFIRMED')}
-              testid="stateSpecificConfirmedCasesContainer"
+              //   testid="stateSpecificConfirmedCasesContainer"
               className="card-button"
             >
               <p className="confirm-card-name">Confirmed</p>
@@ -481,7 +488,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('ACTIVE')}
-              testid="stateSpecificActiveCasesContainer"
+              //   testid="stateSpecificActiveCasesContainer"
               className="card-button"
             >
               <p className="active-card-name">Active</p>
@@ -497,7 +504,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('RECOVERED')}
-              testid="stateSpecificRecoveredCasesContainer"
+              //   testid="stateSpecificRecoveredCasesContainer"
               className="card-button"
             >
               <p className="recovered-card-name">Recovered</p>
@@ -513,7 +520,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('DECEASED')}
-              testid="stateSpecificDeceasedCasesContainer"
+              //   testid="stateSpecificDeceasedCasesContainer"
               className="card-button"
             >
               <p className="deceased-card-name">Deceased</p>
@@ -543,7 +550,10 @@ class SpecificState extends Component {
         </div>
 
         <h1 className="top-districts">Top Districts</h1>
-        <ul className="districts-list" testid="topDistrictsUnorderedList">
+        <ul
+          className="districts-list"
+          // testid="topDistrictsUnorderedList"
+        >
           {districtValue.map(eachDist => (
             <li className="districts-list-item" key={eachDist.name}>
               <p className="districts-name">{eachDist.value}</p>
@@ -556,7 +566,10 @@ class SpecificState extends Component {
   }
 
   stateWiseLoaderView = () => (
-    <div className="state-wise-loader-container" testid="stateDetailsLoader">
+    <div
+      className="state-wise-loader-container"
+      // testid="stateDetailsLoader"
+    >
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
@@ -644,11 +657,11 @@ class SpecificState extends Component {
   }
 
   getLineChartData = () => {
-    const {trendTab, selectValue} = this.state
+    const {trendTab, selectValue, districtsData} = this.state
 
     let {timelineContent} = this.state
     if (selectValue !== 'Select District') {
-      timelineContent = districtNames[selectValue].dates
+      timelineContent = districtsData[selectValue].dates
     }
 
     const confirmedData = []
@@ -802,7 +815,13 @@ class SpecificState extends Component {
   }
 
   timelineSuccessView = () => {
-    const {timelineContent, activeCard, trendTab, selectValue} = this.state
+    const {
+      timelineContent,
+      activeCard,
+      trendTab,
+      selectValue,
+      districtsData,
+    } = this.state
     // console.log('timeline', timelineContent)
 
     let newTimeLineData = []
@@ -828,6 +847,7 @@ class SpecificState extends Component {
         break
       default:
         chartColor = '#9A0E31'
+        break
     }
 
     this.getLineChartData()
@@ -837,10 +857,13 @@ class SpecificState extends Component {
     const daily =
       trendTab === 'DAILY' ? 'trend-button highlight' : 'trend-button'
 
-    const selectOptions = Object.keys(districtNames)
+    const selectOptions = Object.keys(districtsData)
 
     return (
-      <div className="graphs-container" testid="lineChartsContainer">
+      <div
+        className="graphs-container"
+        //   testid="lineChartsContainer"
+      >
         <div className="graphs-large">
           <div className="bar-chart-large">
             <BarChart
@@ -1216,7 +1239,10 @@ class SpecificState extends Component {
   }
 
   timelineLoaderView = () => (
-    <div className="stateWise-loader-container" testid="timelinesDataLoader">
+    <div
+      className="stateWise-loader-container"
+      // testid="timelinesDataLoader"
+    >
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
