@@ -231,24 +231,20 @@ let lineChartData = {}
 
 class SpecificState extends Component {
   state = {
-    stateWiseStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS, FAILURE
+    stateWiseStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
     stateWiseContent: [],
-    timelineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS, FAILURE
+    timelineStatus: 'INITIAL', // INITIAL, IN_PROGRESS, SUCCESS
     timelineContent: [],
     activeCard: 'CONFIRMED', // CONFIRMED, ACTIVE, RECOVERED, DECEASED
     selectValue: 'Select District',
     trendTab: 'CUMULATIVE', // CUMULATIVE OR DAILY
     districtsData: {},
+    // lineChartDetails: {},
   }
 
   componentDidMount() {
     this.getStateWiseDetails()
     this.getTimeLineDetails()
-  }
-
-  startFetching = () => {
-    const {history} = this.props
-    history.replace('/')
   }
 
   getStateWiseDetails = async () => {
@@ -259,21 +255,32 @@ class SpecificState extends Component {
 
     // mapping all stateCode in a list
     const codeList = stateDetailsList.map(eachState => eachState.state_code)
+
+    // if state-code is not available in the list it will show not-found
     if (!codeList.includes(stateCode)) {
       const {history} = this.props
       history.replace('/not-found')
+      console.log('not-found', codeList)
     }
 
     const stateUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
     const response = await fetch(stateUrl)
     const data = await response.json()
     // console.log('props', this.props)
-    // console.log('state url', data)
+    console.log('state url', data)
 
     const currentStateDetails = stateDetailsList.find(
       each => each.state_code === stateCode,
     )
-    console.log('response', response)
+    // console.log('response', response)
+
+    let time = data[stateCode].meta.last_updated
+    time = time.toLocaleString('en-us', {
+      month: 'short',
+      day: '2-digit',
+    })
+    time = time.slice(0, 10)
+    // console.log(time)
 
     if (response.ok) {
       const newStateData = {
@@ -287,7 +294,7 @@ class SpecificState extends Component {
           (data[stateCode].total.recovered + data[stateCode].total.deceased),
         districts: data[stateCode].districts,
         population: data[stateCode].meta.population,
-        lastUpdated: data[stateCode].meta.last_updated,
+        lastUpdated: time,
         name: currentStateDetails.state_name,
         imageUrl: currentStateDetails.image_url,
       }
@@ -320,11 +327,16 @@ class SpecificState extends Component {
       const newTimelineData = data[`${stateCode}`].dates
       const districtNames = data[`${stateCode}`].districts // defined out the class to be global function
 
-      this.setState({
-        timelineContent: newTimelineData,
-        timelineStatus: 'SUCCESS',
-        districtsData: districtNames,
-      })
+      console.log('districts', districtNames)
+
+      this.setState(
+        {
+          timelineContent: newTimelineData,
+          timelineStatus: 'SUCCESS',
+          districtsData: districtNames,
+        },
+        this.getLineChartData,
+      )
     }
   }
 
@@ -348,6 +360,8 @@ class SpecificState extends Component {
     })
     return newDistrictsList
   }
+
+  // State Wise Content
 
   getDistrictValues = () => {
     const {stateWiseContent, activeCard} = this.state
@@ -447,14 +461,6 @@ class SpecificState extends Component {
       districtValue = this.getDistrictValues()
     }
 
-    let time = stateWiseContent.lastUpdated
-    time = time.toLocaleString('en-us', {
-      month: 'short',
-      day: '2-digit',
-    })
-    time = time.slice(0, 10)
-    console.log(time)
-
     return (
       <div className="state-wise-container">
         <div className="heading-container">
@@ -466,13 +472,15 @@ class SpecificState extends Component {
             <p className="tested-numbers">{stateWiseContent.tested}</p>
           </div>
         </div>
-        <p className="last-updated">Lasted updated on {time}</p>
+        <p className="last-updated">
+          Lasted updated on {stateWiseContent.lastUpdated}
+        </p>
         <ul className="state-wise-card-list">
           <li className={confirmedCaseCard} key="confirmed">
             <button
               type="button"
               onClick={() => this.activateCard('CONFIRMED')}
-              //   testid="stateSpecificConfirmedCasesContainer"
+              testid="stateSpecificConfirmedCasesContainer"
               className="card-button"
             >
               <p className="confirm-card-name">Confirmed</p>
@@ -488,7 +496,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('ACTIVE')}
-              //   testid="stateSpecificActiveCasesContainer"
+              testid="stateSpecificActiveCasesContainer"
               className="card-button"
             >
               <p className="active-card-name">Active</p>
@@ -504,7 +512,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('RECOVERED')}
-              //   testid="stateSpecificRecoveredCasesContainer"
+              testid="stateSpecificRecoveredCasesContainer"
               className="card-button"
             >
               <p className="recovered-card-name">Recovered</p>
@@ -520,7 +528,7 @@ class SpecificState extends Component {
             <button
               type="button"
               onClick={() => this.activateCard('DECEASED')}
-              //   testid="stateSpecificDeceasedCasesContainer"
+              testid="stateSpecificDeceasedCasesContainer"
               className="card-button"
             >
               <p className="deceased-card-name">Deceased</p>
@@ -550,10 +558,7 @@ class SpecificState extends Component {
         </div>
 
         <h1 className="top-districts">Top Districts</h1>
-        <ul
-          className="districts-list"
-          // testid="topDistrictsUnorderedList"
-        >
+        <ul className="districts-list" testid="topDistrictsUnorderedList">
           {districtValue.map(eachDist => (
             <li className="districts-list-item" key={eachDist.name}>
               <p className="districts-name">{eachDist.value}</p>
@@ -566,10 +571,7 @@ class SpecificState extends Component {
   }
 
   stateWiseLoaderView = () => (
-    <div
-      className="state-wise-loader-container"
-      // testid="stateDetailsLoader"
-    >
+    <div className="state-wise-loader-container" testid="stateDetailsLoader">
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
@@ -584,6 +586,8 @@ class SpecificState extends Component {
         return this.stateWiseLoaderView()
     }
   }
+
+  // Timeline Content
 
   getDateForBarChart = key => {
     const date = new Date(key) // Sun Sep 12 2021 05:30:00 GMT+0530 (India Standard Time)
@@ -664,6 +668,8 @@ class SpecificState extends Component {
       timelineContent = districtsData[selectValue].dates
     }
 
+    // console.log('log', districtsData)
+    // console.log('log2', timelineContent)
     const confirmedData = []
     Object.keys(timelineContent).forEach(key =>
       confirmedData.push({
@@ -734,6 +740,8 @@ class SpecificState extends Component {
       tested: testedData,
     }
 
+    // this.setState({lineChartDetails: allLineChartData})
+
     if (trendTab === 'DAILY') {
       let refValue = 0
       const newConfirmedData = confirmedData.map(each => {
@@ -803,6 +811,7 @@ class SpecificState extends Component {
         active: newActiveData,
         tested: newTestedData,
       }
+      //   this.setState({lineChartDetails: dailyLineChartData})
     }
   }
 
@@ -822,7 +831,7 @@ class SpecificState extends Component {
       selectValue,
       districtsData,
     } = this.state
-    // console.log('timeline', timelineContent)
+    console.log('timeline', timelineContent)
 
     let newTimeLineData = []
     if (timelineContent.length !== 0) {
@@ -860,10 +869,7 @@ class SpecificState extends Component {
     const selectOptions = Object.keys(districtsData)
 
     return (
-      <div
-        className="graphs-container"
-        //   testid="lineChartsContainer"
-      >
+      <div className="graphs-container" testid="lineChartsContainer">
         <div className="graphs-large">
           <div className="bar-chart-large">
             <BarChart
@@ -1239,10 +1245,7 @@ class SpecificState extends Component {
   }
 
   timelineLoaderView = () => (
-    <div
-      className="stateWise-loader-container"
-      // testid="timelinesDataLoader"
-    >
+    <div className="state-wise-loader-container" testid="timelinesDataLoader">
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )

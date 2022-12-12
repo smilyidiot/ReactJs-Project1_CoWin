@@ -39,10 +39,7 @@ class About extends Component {
         <p className="para-heading">
           COVID-19 vaccines be ready for distribution
         </p>
-        <ul
-          className="quest-ans-list"
-          // testid="faqsUnorderedList"
-        >
+        <ul className="quest-ans-list" testid="faqsUnorderedList">
           {faqsList.map(each => (
             <li className="qa-list-item" key={each.qno}>
               <p className="question">{each.question}</p>
@@ -56,10 +53,7 @@ class About extends Component {
 
   loadingView = () => (
     <div className="main-home-container">
-      <div
-        className="loader-container"
-        //   testid="aboutRouteLoader"
-      >
+      <div className="loader-container" testid="aboutRouteLoader">
         <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
       </div>
     </div>

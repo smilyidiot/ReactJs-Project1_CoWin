@@ -205,6 +205,8 @@ class Home extends Component {
           population: 0,
         }
       })
+
+      console.log('newData', newData)
       this.setState({countryList: newData, status: 'SUCCESS'})
     }
   }
@@ -292,10 +294,7 @@ class Home extends Component {
           />
         </div>
         {searchList.length !== 0 && searchInput !== '' && (
-          <ul
-            className="search-container"
-            //   testid="searchResultsUnorderedList"
-          >
+          <ul className="search-container" testid="searchResultsUnorderedList">
             {searchList.map(eachResult => (
               <Link
                 to={`/state/${eachResult.state_code}`}
@@ -314,10 +313,7 @@ class Home extends Component {
         )}
         <div className="result-container">
           <div className="display-list">
-            <div
-              className="list-card"
-              // testid="countryWideConfirmedCases"
-            >
+            <div className="list-card" testid="countryWideConfirmedCases">
               <p className="confirm-card-name">Confirmed</p>
               <img
                 src="https://res.cloudinary.com/dyhsyterg/image/upload/v1641905267/confirmed_qmelok.svg"
@@ -326,10 +322,7 @@ class Home extends Component {
               />
               <p className="confirm-card-number">{totalConfirmedCases}</p>
             </div>
-            <div
-              className="list-card"
-              // testid="countryWideActiveCases"
-            >
+            <div className="list-card" testid="countryWideActiveCases">
               <p className="active-card-name">Active</p>
               <img
                 src="https://res.cloudinary.com/dyhsyterg/image/upload/v1641908440/active_tmhkjf.svg"
@@ -338,10 +331,7 @@ class Home extends Component {
               />
               <p className="active-card-number">{totalActiveCases}</p>
             </div>
-            <div
-              className="list-card"
-              // testid="countryWideRecoveredCases"
-            >
+            <div className="list-card" testid="countryWideRecoveredCases">
               <p className="recovered-card-name">Recovered</p>
               <img
                 src="https://res.cloudinary.com/dyhsyterg/image/upload/v1641909310/recovered_dtfpwl.svg"
@@ -350,10 +340,7 @@ class Home extends Component {
               />
               <p className="recovered-card-number">{totalRecoveredCases}</p>
             </div>
-            <div
-              className="list-card"
-              // testid="countryWideDeceasedCases"
-            >
+            <div className="list-card" testid="countryWideDeceasedCases">
               <p className="deceased-card-name">Deceased</p>
               <img
                 src="https://res.cloudinary.com/dyhsyterg/image/upload/v1641909662/deceased_tskayc.svg"
@@ -363,10 +350,7 @@ class Home extends Component {
               <p className="deceased-card-number">{totalDeceasedCases}</p>
             </div>
           </div>
-          <div
-            className="states-table"
-            //   testid="stateWiseCovidDataTable"
-          >
+          <div className="states-table" testid="stateWiseCovidDataTable">
             <div className="states-table-headings">
               <div className="state-ut-container">
                 <p className="state-ut-name">States/UT</p>
@@ -374,7 +358,7 @@ class Home extends Component {
                   type="button"
                   className="icon-button"
                   onClick={this.ascendingSort}
-                  //   testid="ascendingSort"
+                  testid="ascendingSort"
                 >
                   <FcGenericSortingAsc className="ascending-icon" />
                 </button>
@@ -382,7 +366,7 @@ class Home extends Component {
                   type="button"
                   className="icon-button"
                   onClick={this.descendingSort}
-                  //   testid="descendingSort"
+                  testid="descendingSort"
                 >
                   <FcGenericSortingDesc className="descending-icon" />
                 </button>
@@ -417,10 +401,7 @@ class Home extends Component {
   }
 
   showLoadingView = () => (
-    <div
-      className="loader-container"
-      // testid="homeRouteLoader"
-    >
+    <div className="loader-container" testid="homeRouteLoader">
       <Loader type="TailSpin" color="#007BFF" width="25px" height="25px" />
     </div>
   )
