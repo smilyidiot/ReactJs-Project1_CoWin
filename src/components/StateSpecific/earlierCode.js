@@ -1,16 +1,6 @@
-/* eslint-disable react/no-unknown-property */
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
-import {
-  ResponsiveContainer,
-  BarChart,
-  LineChart,
-  XAxis,
-  Bar,
-  YAxis,
-  Tooltip,
-  Line,
-} from 'recharts'
+import {BarChart, LineChart, XAxis, Bar, YAxis, Tooltip, Line} from 'recharts'
 
 import Header from '../Header'
 import Footer from '../Footer'
@@ -882,33 +872,31 @@ class SpecificState extends Component {
       <div className="graphs-container" testid="lineChartsContainer">
         <div className="graphs-large">
           <div className="bar-chart-large">
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart
-                width={700}
-                height={240}
-                barSize={35}
-                data={newTimeLineData}
-              >
-                <XAxis
-                  dataKey="date"
-                  axisLine={false}
-                  interval={0}
-                  fontSize={10}
-                  tickLine={0}
-                  tick={{fill: chartColor, strokeWidth: 1}}
-                />
-                <Bar
-                  dataKey="number"
-                  fill={chartColor}
-                  radius={[5, 5, 0, 0]}
-                  label={{
-                    position: 'top',
-                    fill: chartColor,
-                    fontSize: 10,
-                  }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <BarChart
+              width={700}
+              height={240}
+              barSize={35}
+              data={newTimeLineData}
+            >
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                interval={0}
+                fontSize={10}
+                tickLine={0}
+                tick={{fill: chartColor, strokeWidth: 1}}
+              />
+              <Bar
+                dataKey="number"
+                fill={chartColor}
+                radius={[5, 5, 0, 0]}
+                label={{
+                  position: 'top',
+                  fill: chartColor,
+                  fontSize: 10,
+                }}
+              />
+            </BarChart>
           </div>
           <h1 className="spread-trends">Spread Trends</h1>
           <div className="trend-container">
@@ -944,153 +932,311 @@ class SpecificState extends Component {
           <div className="line-chart-large">
             <div className="confirmed-chart">
               <p className="confirmed-heading">Confirmed</p>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart
-                  width={700}
-                  height={200}
-                  data={lineChartData.confirmed}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
-                  <XAxis
-                    dataKey="date"
-                    internal="preserveEnd"
-                    fontSize={10}
-                    tick={{fill: '#FF073A', strokeWidth: 1}}
-                  />{' '}
-                  <YAxis
-                    fontSize={10}
-                    tick={{fill: '#FF073A', strokeWidth: 1}}
-                  />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="number"
-                    stroke="#FF073A"
-                    strokeWidth={2}
-                    dot={{fill: '#FF073A'}}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart
+                width={700}
+                height={200}
+                data={lineChartData.confirmed}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  internal="preserveEnd"
+                  fontSize={10}
+                  tick={{fill: '#FF073A', strokeWidth: 1}}
+                />{' '}
+                <YAxis fontSize={10} tick={{fill: '#FF073A', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#FF073A"
+                  strokeWidth={2}
+                  dot={{fill: '#FF073A'}}
+                />
+              </LineChart>
             </div>
             <div className="active-chart">
               <p className="active-heading">Total Active</p>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart
-                  width={700}
-                  height={200}
-                  data={lineChartData.active}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
-                  <XAxis
-                    dataKey="date"
-                    internal="preserveEnd"
-                    fontSize={10}
-                    tick={{fill: '#007BFF', strokeWidth: 1}}
-                  />{' '}
-                  <YAxis
-                    fontSize={10}
-                    tick={{fill: '#007BFF', strokeWidth: 1}}
-                  />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="number"
-                    stroke="#007BFF"
-                    strokeWidth={2}
-                    dot={{fill: '#007BFF'}}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart
+                width={700}
+                height={200}
+                data={lineChartData.active}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  internal="preserveEnd"
+                  fontSize={10}
+                  tick={{fill: '#007BFF', strokeWidth: 1}}
+                />{' '}
+                <YAxis fontSize={10} tick={{fill: '#007BFF', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#007BFF"
+                  strokeWidth={2}
+                  dot={{fill: '#007BFF'}}
+                />
+              </LineChart>
             </div>
             <div className="recovered-chart">
               <p className="recovered-heading">Recovered</p>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart
-                  width={700}
-                  height={200}
-                  data={lineChartData.recovered}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
-                  <XAxis
-                    dataKey="date"
-                    internal="preserveEnd"
-                    fontSize={10}
-                    tick={{fill: '#27A243', strokeWidth: 1}}
-                  />{' '}
-                  <YAxis
-                    fontSize={10}
-                    tick={{fill: '#27A243', strokeWidth: 1}}
-                  />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="number"
-                    stroke="#27A243"
-                    strokeWidth={2}
-                    dot={{fill: '#27A243'}}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart
+                width={700}
+                height={200}
+                data={lineChartData.recovered}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  internal="preserveEnd"
+                  fontSize={10}
+                  tick={{fill: '#27A243', strokeWidth: 1}}
+                />{' '}
+                <YAxis fontSize={10} tick={{fill: '#27A243', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#27A243"
+                  strokeWidth={2}
+                  dot={{fill: '#27A243'}}
+                />
+              </LineChart>
             </div>
             <div className="deceased-chart">
               <p className="deceased-heading">Deceased</p>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart
-                  width={700}
-                  height={200}
-                  data={lineChartData.deceased}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
-                  <XAxis
-                    dataKey="date"
-                    internal="preserveEnd"
-                    fontSize={10}
-                    tick={{fill: '#6C757D', strokeWidth: 1}}
-                  />{' '}
-                  <YAxis
-                    fontSize={10}
-                    tick={{fill: '#6C757D', strokeWidth: 1}}
-                  />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="number"
-                    stroke="#6C757D"
-                    strokeWidth={2}
-                    dot={{fill: '#6C757D'}}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart
+                width={700}
+                height={200}
+                data={lineChartData.deceased}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  internal="preserveEnd"
+                  fontSize={10}
+                  tick={{fill: '#6C757D', strokeWidth: 1}}
+                />{' '}
+                <YAxis fontSize={10} tick={{fill: '#6C757D', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#6C757D"
+                  strokeWidth={2}
+                  dot={{fill: '#6C757D'}}
+                />
+              </LineChart>
             </div>
             <div className="tested-chart">
               <p className="tested-heading">Tested</p>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart
-                  width={700}
-                  height={200}
-                  data={lineChartData.tested}
-                  margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                >
-                  <XAxis
-                    dataKey="date"
-                    internal="preserveEnd"
-                    fontSize={10}
-                    tick={{fill: '#9673B9', strokeWidth: 1}}
-                  />{' '}
-                  <YAxis
-                    fontSize={10}
-                    tick={{fill: '#9673B9', strokeWidth: 1}}
-                  />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="number"
-                    stroke="#9673B9"
-                    strokeWidth={2}
-                    dot={{fill: '#9673B9'}}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <LineChart
+                width={700}
+                height={200}
+                data={lineChartData.tested}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  internal="preserveEnd"
+                  fontSize={10}
+                  tick={{fill: '#9673B9', strokeWidth: 1}}
+                />{' '}
+                <YAxis fontSize={10} tick={{fill: '#9673B9', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#9673B9"
+                  strokeWidth={2}
+                  dot={{fill: '#9673B9'}}
+                />
+              </LineChart>
+            </div>
+          </div>
+        </div>
+        <div className="graphs-small">
+          <div className="bar-chart-small">
+            <BarChart
+              width={350}
+              height={150}
+              barSize={15}
+              data={newTimeLineData}
+            >
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                interval={0}
+                fontSize={6}
+                tickLine={0}
+                tick={{fill: chartColor, strokeWidth: 1}}
+              />
+              <Bar
+                dataKey="number"
+                fill={chartColor}
+                radius={[3, 3, 0, 0]}
+                label={{position: 'top', fill: chartColor, fontSize: 6}}
+              />
+            </BarChart>
+          </div>
+          <h1 className="spread-trends">Daily Spread Trends</h1>
+          <div className="trend-container">
+            <button
+              className={cumulative}
+              type="button"
+              onClick={() => this.trendChange('CUMULATIVE')}
+            >
+              Cumulative
+            </button>
+            <button
+              className={daily}
+              type="button"
+              onClick={() => this.trendChange('DAILY')}
+            >
+              Daily
+            </button>
+          </div>
+          <div className="select-container">
+            <select
+              value={selectValue}
+              className="select-element"
+              onChange={this.onChangeSelect}
+            >
+              <option value="Select District">Select District</option>
+              {selectOptions.map(eachDist => (
+                <option key={eachDist} value={eachDist}>
+                  {eachDist}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="line-chart-small">
+            <div className="confirmed-chart">
+              <p className="confirmed-heading">Confirmed</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.confirmed}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#FF073A', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#FF073A', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#FF073A"
+                  strokeWidth={1}
+                  dot={{fill: '#FF073A', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="active-chart">
+              <p className="active-heading">Total Active</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.active}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#007BFF', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#007BFF', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#007BFF"
+                  strokeWidth={1}
+                  dot={{fill: '#007BFF', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="recovered-chart">
+              <p className="recovered-heading">Recovered</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.recovered}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#27A243', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#27A243', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#27A243"
+                  strokeWidth={1}
+                  dot={{fill: '#27A243', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="deceased-chart">
+              <p className="deceased-heading">Deceased</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.deceased}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#6C757D', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#6C757D', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#6C757D"
+                  strokeWidth={1}
+                  dot={{fill: '#6C757D', r: 1}}
+                />
+              </LineChart>
+            </div>
+            <div className="tested-chart">
+              <p className="tested-heading">Tested</p>
+              <LineChart
+                width={410}
+                height={160}
+                data={lineChartData.tested}
+                margin={{top: 5, right: 60, left: 20, bottom: 5}}
+              >
+                <XAxis
+                  dataKey="date"
+                  interval="preserveEnd"
+                  fontSize={6}
+                  tick={{fill: '#9673B9', strokeWidth: 1}}
+                />
+                <YAxis fontSize={6} tick={{fill: '#9673B9', strokeWidth: 1}} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="number"
+                  stroke="#9673B9"
+                  strokeWidth={1}
+                  dot={{fill: '#9673B9', r: 1}}
+                />
+              </LineChart>
             </div>
           </div>
         </div>

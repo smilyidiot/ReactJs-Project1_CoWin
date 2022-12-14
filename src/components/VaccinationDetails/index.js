@@ -196,7 +196,7 @@ class VaccinationDetails extends Component {
                 By Age
               </button>
             </div>
-            <div className="line-chart-large">
+            <div className="vac-line-chart-large">
               {trends === 'dose' && (
                 <ResponsiveContainer width="100%">
                   <AreaChart
@@ -275,7 +275,7 @@ class VaccinationDetails extends Component {
                 </ResponsiveContainer>
               )}
             </div>
-            <div className="line-chart-small">
+            <div className="vac-line-chart-small">
               {trends === 'dose' && (
                 <ResponsiveContainer width="100%" height={250}>
                   <AreaChart
